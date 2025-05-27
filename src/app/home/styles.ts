@@ -44,4 +44,27 @@ export const styles = StyleSheet.create({
     color: "#828282",
     fontWeight: 600,
   },
+  separator: {
+    width: "100%",
+    height: 1,
+    backgroundColor: "#eef0e5",
+    marginVertical: 16,
+  },
+  listContent: {
+    paddingTop: 16,
+    paddingBottom: 62,
+  },
+  emptyContent: {
+    flex: 1,
+    width: "100%",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    color: "#828282",
+  },
+  emptyText: {
+    fontSize: 12,
+    fontWeight: 400,
+  },
 });

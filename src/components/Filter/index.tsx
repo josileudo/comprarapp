@@ -1,9 +1,4 @@
-import {
-  Text,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  View,
-} from "react-native";
+import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { styles } from "./styles";
 import { FilterStatus } from "@/types/FilterStatus";
 import { StatusIcon } from "@/components/StatusIcon";
