@@ -36,8 +36,10 @@ export function Home() {
   };
 
   const handleAddItem = async () => {
-    if (!description.trim())
+    if (!description.trim()) {
       Alert.alert("Atenção", "Adicionar um item no campo");
+      return;
+    }
 
     const newItem = {
       id: Math.random().toString(36).substring(2),
@@ -81,6 +83,16 @@ export function Home() {
     ]);
   };
 
+  const handleToggleStatus = async (id: string) => {
+    try {
+      await itemsStorage.toggleStatus(id);
+      await getItemByStatus();
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Falha", "Falha ao atualizar item");
+    }
+  };
+
   useEffect(() => {
     getItemByStatus();
   }, [filter]); // Sempre que o filtro for setado, renderizarar o filtro
@@ -121,9 +133,7 @@ export function Home() {
             <Item
               data={item}
               onRemove={() => handleRemoveItem(item.id)}
-              onStatus={() => {
-                setFilter;
-              }}
+              onStatus={() => handleToggleStatus(item.id)}
             />
           )}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
