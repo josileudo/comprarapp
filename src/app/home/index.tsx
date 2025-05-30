@@ -59,6 +59,16 @@ export function Home() {
     setItems([]);
   };
 
+  const handleRemoveItem = async (id: string) => {
+    try {
+      await itemsStorage.remove(id);
+      await getItemByStatus();
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Falha", "Falha ao remover item");
+    }
+  };
+
   useEffect(() => {
     getItemByStatus();
   }, [filter]); // Sempre que o filtro for setado, renderizarar o filtro
@@ -101,7 +111,7 @@ export function Home() {
           renderItem={({ item }) => (
             <Item
               data={item}
-              onRemove={() => {}}
+              onRemove={() => handleRemoveItem(item.id)}
               onStatus={() => {
                 setFilter;
               }}
