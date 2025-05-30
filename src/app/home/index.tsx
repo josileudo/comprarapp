@@ -55,8 +55,13 @@ export function Home() {
     setDescription("");
   };
 
-  const handleDeleteAll = () => {
-    setItems([]);
+  const handleRemoveAll = async () => {
+    try {
+      await itemsStorage.removeAll();
+      await getItemByStatus();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleRemoveItem = async (id: string) => {
@@ -67,6 +72,13 @@ export function Home() {
       console.log(error);
       Alert.alert("Falha", "Falha ao remover item");
     }
+  };
+
+  const handleClearAll = () => {
+    Alert.alert("Atenção", "Deseja apagar tudo?", [
+      { text: "Não", style: "cancel" },
+      { text: "Sim", style: "default", onPress: () => handleRemoveAll() },
+    ]);
   };
 
   useEffect(() => {
@@ -96,10 +108,7 @@ export function Home() {
               onPress={() => setFilter(status)}
             />
           ))}
-          <TouchableOpacity
-            style={styles.clearButton}
-            onPress={handleDeleteAll}
-          >
+          <TouchableOpacity style={styles.clearButton} onPress={handleClearAll}>
             <Text style={styles.clearText}>Limpar</Text>
           </TouchableOpacity>
         </View>
