@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { itemsStorage, ItemStorage } from "@/storage/itemsStorage";
 
 export function Home() {
-  const [filter, setFilter] = useState<FilterStatus>(FilterStatus.DONE);
+  const [filter, setFilter] = useState<FilterStatus>(FilterStatus.PENDING);
   const [description, setDescription] = useState<string>("");
   const [items, setItems] = useState<ItemStorage[]>([]);
   const FILTER_STATUS: FilterStatus[] = [
@@ -25,9 +25,9 @@ export function Home() {
     FilterStatus.DONE,
   ];
 
-  const getItems = async () => {
+  const getItemByStatus = async () => {
     try {
-      const response = await itemsStorage.get();
+      const response = await itemsStorage.getByStatus(filter);
       setItems(response);
     } catch (e) {
       console.log(e);
@@ -46,7 +46,12 @@ export function Home() {
     };
 
     await itemsStorage.add(newItem);
-    await getItems();
+    await getItemByStatus();
+
+    setFilter(FilterStatus.PENDING);
+
+    Alert.alert("Sucesso!", `${description}, adicionado com sucesso!`);
+
     setDescription("");
   };
 
@@ -55,8 +60,8 @@ export function Home() {
   };
 
   useEffect(() => {
-    getItems();
-  }, []);
+    getItemByStatus();
+  }, [filter]); // Sempre que o filtro for setado, renderizarar o filtro
 
   return (
     <View style={styles.container}>
@@ -94,7 +99,13 @@ export function Home() {
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
-            <Item data={item} onRemove={() => {}} onStatus={() => {}} />
+            <Item
+              data={item}
+              onRemove={() => {}}
+              onStatus={() => {
+                setFilter;
+              }}
+            />
           )}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
           contentContainerStyle={styles.listContent}
